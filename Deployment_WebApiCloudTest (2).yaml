@@ -1,0 +1,34 @@
+﻿apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hrms6-deployment
+  labels:
+    app: hrms6
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hrms6 
+  template:
+    metadata:
+      labels:
+        app: hrms6
+    spec:
+      containers:
+      - name: yaminicontainer
+        image: yaminicontainer.azurecr.io/azurecontainerrepo001:latest
+        ports:
+        - containerPort: 8080
+      imagePullSecrets:
+      - name: webapisvcsecret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: webapplication22svc
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+  selector:
+    app: hrms6
